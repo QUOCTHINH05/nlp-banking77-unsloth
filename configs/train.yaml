@@ -1,0 +1,38 @@
+# Model
+model_name: "unsloth/llama-3-8b-bnb-4bit"
+max_seq_length: 2048
+load_in_4bit: true
+
+# LoRA
+lora_r: 16
+lora_alpha: 16
+lora_dropout: 0
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Training
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4
+warmup_steps: 5
+num_train_epochs: 2
+learning_rate: 0.0002
+optimizer: "adamw_8bit"
+weight_decay: 0.01
+lr_scheduler_type: "linear"
+seed: 3407
+
+# Data
+train_data_path: "sample_data/train.csv"
+label_mapping_path: "sample_data/label_mapping.json"
+
+# Output
+output_dir: "outputs"
+checkpoint_dir: "banking_model_checkpoint"
+save_steps: 20
+logging_steps: 1

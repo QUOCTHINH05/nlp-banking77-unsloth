@@ -1,0 +1,4 @@
+label_mapping: sample_data/label_mapping.json
+max_new_tokens: 16
+max_seq_length: 2048
+model_checkpoint: banking_model_checkpoint

@@ -1,0 +1,12 @@
+unsloth[kaggle-new]
+xformers
+trl==0.24.0
+transformers==5.5.0
+peft
+accelerate
+bitsandbytes
+datasets==4.3.0
+pandas
+PyYAML
+torch
+tqdm
