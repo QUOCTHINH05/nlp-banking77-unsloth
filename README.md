@@ -1,4 +1,4 @@
-\# Banking Intent Classification with Unsloth
+# Banking Intent Classification with Unsloth
 
 
 
@@ -6,7 +6,7 @@ Fine-tuning LLaMA-3 8B for banking intent detection using the BANKING77 dataset.
 
 
 
-\## Project Structure
+## Project Structure
 
 banking-intent-unsloth/
 
@@ -16,7 +16,7 @@ banking-intent-unsloth/
 
 |   |-- inference.py
 
-|   |-- preprocess\_data.py
+|   |-- preprocess_data.py
 
 |   |-- evaluate.py
 
@@ -26,7 +26,7 @@ banking-intent-unsloth/
 
 |   |-- inference.yaml
 
-|-- sample\_data/
+|-- sample_data/
 
 |   |-- train.csv
 
@@ -42,15 +42,15 @@ banking-intent-unsloth/
 
 
 
-\## Dataset
+## Dataset
 
 A 10-class subset of \[BANKING77](https://github.com/PolyAI-LDN/task-specific-datasets/tree/master/banking\_data),
 
 containing the following intents:
 
-\- activate\_my\_card, age\_limit, card\_arrival, change\_pin, exchange\_rate
+- activate\_my\_card, age\_limit, card\_arrival, change\_pin, exchange\_rate
 
-\- lost\_or\_stolen\_card, passcode\_forgotten, request\_refund, terminate\_account, transfer\_timing
+- lost\_or\_stolen\_card, passcode\_forgotten, request\_refund, terminate\_account, transfer\_timing
 
 
 
@@ -64,11 +64,23 @@ containing the following intents:
 
 
 
-\## Environment Setup
+## Environment Setup
 
+### Requirements
 
+> **Important:** Training requires a CUDA-capable GPU.
+> Unsloth does not support CPU-only or Windows local machines.
+> It is recommended to run training on **Kaggle** (free T4 GPU)
+> or **Google Colab**.
 
-\### On Kaggle (recommended)
+### Recommended platforms
+| Platform | GPU | Free |
+|----------|-----|------|
+| Kaggle   | T4 16GB | Yes |
+| Google Colab | T4/V100 | Yes |
+| Local machine | NVIDIA GPU required | — |
+
+### On Kaggle (recommended)
 
 Run the first notebook cell to install dependencies:
 
@@ -84,39 +96,33 @@ pip install transformers==4.51.3 trl==0.18.2 datasets==3.4.1
 
 
 
-\### Local machine
+
+## How to Run
+
+
+
+### Step 1 — Preprocess data
 
 ```bash
 
-pip install -r requirements.txt
+python scripts/preprocess_data.py
 
 ```
 
-
-
-\## How to Run
-
-
-
-\### Step 1 — Preprocess data
-
-```bash
-
-python scripts/preprocess\_data.py
-
-```
-
-Downloads BANKING77, filters 10 intents, cleans text, and saves to `sample\_data/`.
+Downloads BANKING77, filters 10 intents, cleans text, and saves to `sample_data/`.
 
 
 
-\### Step 2 — Train
+### Step 2 — Train
 
 ```bash
 
 bash train.sh
 
-\# or directly:
+```
+or directly:
+
+```bash
 
 python scripts/train.py
 
@@ -126,13 +132,17 @@ Fine-tunes LLaMA-3 8B with LoRA (r=16) for 2 epochs. Saves checkpoint to `bankin
 
 
 
-\### Step 3 — Inference
+### Step 3 — Inference
 
 ```bash
 
 bash inference.sh
 
-\# or directly:
+```
+
+or directly:
+
+```bashh
 
 python scripts/inference.py
 
@@ -142,8 +152,7 @@ python scripts/evaluate.py
 
 
 
-\## Hyperparameters
-
+## Hyperparameters
 
 
 | Parameter | Value |
@@ -170,7 +179,7 @@ python scripts/evaluate.py
 
 
 
-\## Results
+## Results
 
 
 
@@ -182,7 +191,7 @@ python scripts/evaluate.py
 
 
 
-\## Video Demonstration
+## Video Demonstration
 
-\[Link to demo video](YOUR\_GOOGLE\_DRIVE\_LINK\_HERE)
+\[Link to demo video](VideoDemo)
 
