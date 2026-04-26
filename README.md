@@ -1,6 +1,6 @@
 # Banking Intent Classification with Unsloth
 
-Fine-tuning LLaMA-3 8B for banking intent detection using the BANKING77 dataset.
+Fine-tuning **LLaMA-3 8B** for banking intent detection using the BANKING77 dataset.
 
 ## Project Structure
 
@@ -52,88 +52,86 @@ A 10-class subset of [BANKING77](https://github.com/PolyAI-LDN/task-specific-dat
 | Google Colab   | T4 / V100    | Yes  |
 | Local machine  | NVIDIA GPU required | —    |
 
-### On Kaggle (recommended)
+### Running on Kaggle (recommended)
 
-Run the first notebook cell to install dependencies:
+1. The first cell is to install dependencies:
 
 ```bash
-pip install "unsloth[kaggle-new] @ git+https://github.com/unslothai/unsloth.git"
-pip install --no-deps xformers peft accelerate bitsandbytes
-pip install transformers==4.51.3 trl==0.18.2 datasets==3.4.1
+!pip install unsloth
+!pip install --no-deps xformers trl peft accelerate bitsandbytes
 ```
 
+2. Clone the repository
 
-## How to Run
+```bash
+!git clone https://github.com/QUOCTHINH05/nlp-banking77-unsloth.git
+%cd nlp-banking77-unsloth
+!ls -la
+```
 
-I recommend you to run on Kaggle, which support GPU T4 x 2. This is the full version I used for video demonstration. Please access the following link for better inspection \[https://www.kaggle.com/code/thinhdo05/23120089](23120089-Kaggle-Demo)
+3. Run the preprocessing file
+
+```bash
+!python scripts/preprocess_data.py
+````
+
+4. Run the training file
+
+```bash
+!python scripts/train.py
+```
+
+5. Run the inference
+
+```bash
+!python scripts/inference.py
+```
+
+6. Run the evaluation
+
+```bash
+!python scripts/evaluate.py
+```
+
+7. (Optional) Testing Freely
+
+In the `print` statement, replace the queries "I lost my card and need a new one" with your own question.
+
+```bash
+from scripts.inference import IntentClassification
+clf = IntentClassification("configs/inference.yaml")
+print(clf("I lost my card and need a new one"))
+```
+
+## The demo on Kaggle
+
+I recommend you to run on Kaggle, which support GPU T4 x 2. This is the full version I used for video demonstration. Please access the following link for better inspection: 
+[23120089-DemoKaggle](https://www.kaggle.com/code/thinhdo05/23120089)
 
 Just run all the cell to see the results.
 
-### Step 1 — Preprocess data
-
-```bash
-
-python scripts/preprocess_data.py
-
-```
-
-Downloads BANKING77, filters 10 intents, cleans text, and saves to `sample_data/`.
-
-
-### Step 2 — Train
-
-```bash
-
-bash train.sh
-
-```
-or directly:
-
-```bash
-
-python scripts/train.py
-
-```
-
-Fine-tunes LLaMA-3 8B with LoRA (r=16) for 2 epochs. Saves checkpoint to `banking\_model\_checkpoint/`.
-
-
-### Step 3 — Inference
-
-```bash
-
-bash inference.sh
-
-```
-
-or directly:
-
-```bashh
-
-python scripts/inference.py
-
-python scripts/evaluate.py
-
-```
+## The Video Demonstration
+Here is the video's Google Drive link for demo: 
+[VideoDemo](https://drive.google.com/file/d/1DsUICCQn3Pcqck5Ej2ep6t5TvMAhz3gd/view?usp=sharing)
 
 
 ## Hyperparameters
-These are the hyperparameters I use to fine-tune the model, following the recommended instruction on Unsloth.
+These are the hyperparameters I use to fine-tune the model, following the recommended instruction on [Unsloth](https://unsloth.ai/docs/get-started/fine-tuning-llms-guide).
 
 | Parameter | Value | Reason |
 |-----------|-------|--------|
 | Base model | unsloth/llama-3-8b-bnb-4bit | Strong pretrained LLM, efficient with 4-bit quantization |
 | LoRA rank (r) | 16 | Balance between trainable params and performance |
 | LoRA alpha | 16 | Standard setting, equal to r |
+| LoRA dropout | 0 | 0 is optimized, according to Unsloth guide |
 | Batch size | 4 | Fits within Kaggle T4 16GB VRAM |
 | Gradient accumulation | 4 | Effective batch size = 16 |
 | Epochs | 2 | Sufficient for small dataset, avoids overfitting |
 | Learning rate | 2e-4 | Standard for LoRA fine-tuning |
 | Optimizer | adamw_8bit | Memory efficient, recommended by Unsloth |
 | Max sequence length | 2048 | Covers all banking intent messages |
-
+| Regularization (weight decay) | 0.01 | Small number, don't use to large, 0.01 is recommended by Unsloth |
 ## Results
-
 
 
 | Metric | Value |
@@ -160,9 +158,4 @@ The high accuracy is expected and valid for the following reasons:
 
 5. **This is a subset result** — Accuracy would likely be lower on the
    full 77-class BANKING77 benchmark, which is a much harder problem.
-
-
-## Video Demonstration
-
-\[Link to demo video](VideoDemo)
 
